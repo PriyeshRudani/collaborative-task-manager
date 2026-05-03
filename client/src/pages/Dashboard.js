@@ -1,22 +1,28 @@
 import { useEffect, useState } from "react";
-import API from "../services/api";
+import {
+  getTasks,
+  getTaskStats,
+  addTask,
+  updateTaskStatus,
+  deleteTask,
+} from "../services/api";
 
 function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [stats, setStats] = useState({});
-  const [newTask, setNewTask] = useState({
+  const [task, setTask] = useState({
     title: "",
     description: "",
   });
 
   const fetchTasks = async () => {
-    const res = await API.get("/tasks");
-    setTasks(res.data);
+    const data = await getTasks();
+    setTasks(data);
   };
 
   const fetchStats = async () => {
-    const res = await API.get("/tasks/stats");
-    setStats(res.data);
+    const data = await getTaskStats();
+    setStats(data);
   };
 
   useEffect(() => {
@@ -24,21 +30,28 @@ function Dashboard() {
     fetchStats();
   }, []);
 
-  const createTask = async (e) => {
+  const handleChange = (e) => {
+    setTask({ ...task, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!newTask.title) return alert("Title required");
+    if (!task.title) {
+      alert("Title required");
+      return;
+    }
 
-    await API.post("/tasks", newTask);
+    await addTask(task);
 
-    setNewTask({ title: "", description: "" });
+    setTask({ title: "", description: "" });
 
     fetchTasks();
     fetchStats();
   };
 
-  const updateTask = async (id, status) => {
-    await API.put(`/tasks/${id}`, {
+  const handleUpdate = async (id, status) => {
+    await updateTaskStatus(id, {
       status: status === "pending" ? "completed" : "pending",
     });
 
@@ -46,8 +59,8 @@ function Dashboard() {
     fetchStats();
   };
 
-  const deleteTask = async (id) => {
-    await API.delete(`/tasks/${id}`);
+  const handleDelete = async (id) => {
+    await deleteTask(id);
 
     fetchTasks();
     fetchStats();
@@ -76,19 +89,19 @@ function Dashboard() {
       <div className="card">
         <h3>Create Task</h3>
 
-        <form onSubmit={createTask}>
+        <form onSubmit={handleSubmit}>
           <input
+            name="title"
             placeholder="Title"
-            value={newTask.title}
-            onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+            value={task.title}
+            onChange={handleChange}
           />
 
           <input
+            name="description"
             placeholder="Description"
-            value={newTask.description}
-            onChange={(e) =>
-              setNewTask({ ...newTask, description: e.target.value })
-            }
+            value={task.description}
+            onChange={handleChange}
           />
 
           <button type="submit">Add Task</button>
@@ -98,20 +111,36 @@ function Dashboard() {
       <div className="card">
         <h3>Tasks</h3>
 
-        <ul>
-          {tasks.map((task) => (
-            <li key={task._id}>
-              <strong>{task.title}</strong> — {task.status}
-              <br />
-              <button onClick={() => updateTask(task._id, task.status)}>
-                Toggle
-              </button>
-              <button className="delete" onClick={() => deleteTask(task._id)}>
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
+        <table border="1">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tasks.map((task) => (
+              <tr key={task._id}>
+                <td>{task.title}</td>
+                <td>{task.description}</td>
+                <td>{task.status}</td>
+                <td>
+                  <button onClick={() => handleUpdate(task._id, task.status)}>
+                    Toggle
+                  </button>
+                  <button
+                    className="delete"
+                    onClick={() => handleDelete(task._id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

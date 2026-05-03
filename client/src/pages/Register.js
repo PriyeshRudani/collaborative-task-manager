@@ -1,5 +1,5 @@
 import { useState } from "react";
-import API from "../services/api";
+import { registerUser } from "../services/api";
 
 function Register() {
   const [name, setName] = useState("");
@@ -10,7 +10,7 @@ function Register() {
     e.preventDefault();
 
     try {
-      await API.post("/auth/register", {
+      await registerUser({
         name,
         email,
         password,
@@ -31,21 +31,24 @@ function Register() {
 
         <form onSubmit={handleSubmit}>
           <input
-            type="text" required
+            type="text"
+            required
             placeholder="Full Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
 
           <input
-            type="email" required
+            type="email"
+            required
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
           <input
-            type="password" required
+            type="password"
+            required
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

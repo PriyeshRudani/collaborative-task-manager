@@ -53,6 +53,18 @@ button.secondary {
   background: #6c757d;
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+}
+
 .auth-container {
   height: 100vh;
   display: flex;

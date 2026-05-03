@@ -1,5 +1,5 @@
 import { useState } from "react";
-import API from "../services/api";
+import { loginUser } from "../services/api";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -9,12 +9,12 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await API.post("/auth/login", {
+      const data = await loginUser({
         email,
         password,
       });
 
-      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("token", data.token);
 
       alert("Login successful");
 
@@ -31,14 +31,16 @@ function Login() {
 
         <form onSubmit={handleSubmit}>
           <input
-            type="email" required
+            type="email"
+            required
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          <input 
-            type="password" required
+          <input
+            type="password"
+            required
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -48,7 +50,7 @@ function Login() {
         </form>
 
         <p style={{ marginTop: "10px" }}>
-          Don’t have an account? <a href="/register">Register</a>
+          Don't have an account? <a href="/register">Register</a>
         </p>
       </div>
     </div>

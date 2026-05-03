@@ -5,11 +5,10 @@ const auth = require("../middleware/authMiddleware");
 const {
   createTask,
   getTasks,
+  getTaskStats,
   updateTask,
   deleteTask,
 } = require("../controllers/taskController");
-
-const { getTaskStats } = require("../controllers/taskController");
 
 router.get("/", auth, getTasks);
 router.get("/stats", auth, getTaskStats);

@@ -8,7 +8,11 @@ module.exports = function (req, res, next) {
   }
 
   try {
-    const decoded = jwt.verify(token.replace("Bearer ", ""), process.env.JWT_SECRET);
+    const decoded = jwt.verify(
+      token.replace("Bearer ", ""),
+      process.env.JWT_SECRET
+    );
+
     req.user = decoded.user;
     next();
   } catch (err) {
