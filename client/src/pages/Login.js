@@ -1,9 +1,14 @@
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
 import { loginUser } from "../services/api";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  if (localStorage.getItem("token")) {
+    return <Navigate to="/" />;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
