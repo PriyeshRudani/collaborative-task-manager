@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000/api";
+baseURL: "https://collaborative-task-manager-0sbd.onrender.com/api"
 
 const getHeaders = () => {
   const token = localStorage.getItem("token");
