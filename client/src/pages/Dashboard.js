@@ -13,6 +13,7 @@ function Dashboard() {
   const [task, setTask] = useState({
     title: "",
     description: "",
+    deadline: "",
   });
 
   const fetchTasks = async () => {
@@ -44,7 +45,7 @@ function Dashboard() {
 
     await addTask(task);
 
-    setTask({ title: "", description: "" });
+    setTask({ title: "", description: "", deadline: "" });
 
     fetchTasks();
     fetchStats();
@@ -104,6 +105,13 @@ function Dashboard() {
             onChange={handleChange}
           />
 
+          <input
+            type="datetime-local"
+            name="deadline"
+            value={task.deadline}
+            onChange={handleChange}
+          />
+
           <button type="submit">Add Task</button>
         </form>
       </div>
@@ -116,6 +124,7 @@ function Dashboard() {
             <tr>
               <th>Title</th>
               <th>Description</th>
+              <th>Deadline</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -125,6 +134,11 @@ function Dashboard() {
               <tr key={task._id}>
                 <td>{task.title}</td>
                 <td>{task.description}</td>
+                <td>
+                  {task.deadline
+                    ? new Date(task.deadline).toLocaleString()
+                    : "No deadline"}
+                </td>
                 <td>{task.status}</td>
                 <td>
                   <button onClick={() => handleUpdate(task._id, task.status)}>
