@@ -27,6 +27,7 @@ function Register() {
   return (
     <div className="auth-container">
       <div className="auth-card">
+        <p className="eyebrow">Create workspace access</p>
         <h2>Register</h2>
 
         <form onSubmit={handleSubmit}>
@@ -57,7 +58,7 @@ function Register() {
           <button type="submit">Register</button>
         </form>
 
-        <p style={{ marginTop: "10px" }}>
+        <p className="auth-link">
           Already have an account? <a href="/login">Login</a>
         </p>
       </div>

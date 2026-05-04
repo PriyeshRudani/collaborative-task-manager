@@ -49,6 +49,21 @@ export const getTasks = async () => {
   return getData(res);
 };
 
+export const getFilteredTasks = async (filters) => {
+  const params = new URLSearchParams();
+
+  Object.keys(filters).forEach((key) => {
+    if (filters[key]) {
+      params.append(key, filters[key]);
+    }
+  });
+
+  const res = await fetch(`${BASE_URL}/tasks?${params.toString()}`, {
+    headers: getHeaders(),
+  });
+  return getData(res);
+};
+
 export const getTaskStats = async () => {
   const res = await fetch(`${BASE_URL}/tasks/stats`, {
     headers: getHeaders(),
@@ -77,6 +92,55 @@ export const updateTaskStatus = async (id, task) => {
 export const deleteTask = async (id) => {
   const res = await fetch(`${BASE_URL}/tasks/${id}`, {
     method: "DELETE",
+    headers: getHeaders(),
+  });
+  return getData(res);
+};
+
+export const getUsers = async () => {
+  const res = await fetch(`${BASE_URL}/auth/users`, {
+    headers: getHeaders(),
+  });
+  return getData(res);
+};
+
+export const getProjects = async () => {
+  const res = await fetch(`${BASE_URL}/projects`, {
+    headers: getHeaders(),
+  });
+  return getData(res);
+};
+
+export const addProject = async (project) => {
+  const res = await fetch(`${BASE_URL}/projects`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify(project),
+  });
+  return getData(res);
+};
+
+export const inviteMember = async (id, member) => {
+  const res = await fetch(`${BASE_URL}/projects/${id}/members`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify(member),
+  });
+  return getData(res);
+};
+
+export const addComment = async (id, comment) => {
+  const res = await fetch(`${BASE_URL}/tasks/${id}/comments`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify(comment),
+  });
+  return getData(res);
+};
+
+export const toggleSubtask = async (id, subtaskId) => {
+  const res = await fetch(`${BASE_URL}/tasks/${id}/subtasks/${subtaskId}`, {
+    method: "PUT",
     headers: getHeaders(),
   });
   return getData(res);

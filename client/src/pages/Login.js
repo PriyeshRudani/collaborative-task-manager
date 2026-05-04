@@ -32,6 +32,7 @@ function Login() {
   return (
     <div className="auth-container">
       <div className="auth-card">
+        <p className="eyebrow">Welcome back</p>
         <h2>Login</h2>
 
         <form onSubmit={handleSubmit}>
@@ -54,7 +55,7 @@ function Login() {
           <button type="submit">Login</button>
         </form>
 
-        <p style={{ marginTop: "10px" }}>
+        <p className="auth-link">
           Don't have an account? <a href="/register">Register</a>
         </p>
       </div>
